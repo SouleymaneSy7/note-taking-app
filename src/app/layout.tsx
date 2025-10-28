@@ -8,6 +8,7 @@ const satisfy = Satisfy({
   weight: "400",
   subsets: ["latin"],
   display: "swap",
+  variable: "--font-satisfy",
 });
 
 const gillSans = localFont({
@@ -77,7 +78,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${satisfy.className} ${iaWriterMono.className} ${gillSans.className} ${georgia.className} antialiased`}
+        className={`${satisfy.variable} ${iaWriterMono.variable} ${gillSans.variable} ${georgia.variable} antialiased`}
       >
         {children}
       </body>
