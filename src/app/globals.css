@@ -3,6 +3,31 @@
 
 @custom-variant dark (&:is(.dark *));
 
+@theme {
+  --color-*: initial;
+
+  // Font Size 
+  --text-xs: var(--fs-8-10);
+  --text-sm: var(--fs-10-12);
+  --text-md: var(--fs-12-14);
+  --text-base: var(--fs-14-16);
+
+  --text-heading-sm: var(--fs-16-20);
+  --text-heading-md: var(--fs-20-24);
+  --text-heading-lg: var(--fs-28-32);
+ 
+  // Font Family
+  --font-ia-writer-mono: var(--font-ia-writer-mono);
+  --font-gill-sans: var(--font-gill-sans);
+  --font-georgia: var(--font-georgia);
+  --font-satisfy: var(--font-satisfy);
+
+  // Font Weight
+  --font-weight-regular: 400;
+  --font-weight-semi-bold: 600;
+  --font-weight-bold: 700;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -76,6 +101,16 @@
   --sidebar-accent-foreground: oklch(0.265 0.0237 267.13); // base-text-clr
   --sidebar-border: oklch(0.8752 0.0148 264.49); // border-clr
   --sidebar-ring: oklch(0.1631 0.0162 261.49); // dark-bg-clr
+
+  // Font Size
+ --fs-8-10: clamp(0.5rem, 0.4583rem + 0.1852vw, 0.625rem);
+  --fs-10-12: clamp(0.625rem, 0.5833rem + 0.1852vw, 0.75rem);
+  --fs-12-14: clamp(0.75rem, 0.7083rem + 0.1852vw, 0.875rem);
+  --fs-14-16: clamp(0.875rem, 0.8333rem + 0.1852vw, 1rem);
+  --fs-16-20: clamp(1rem, 0.9167rem + 0.3704vw, 1.25rem);
+  --fs-20-24: clamp(1.25rem, 1.1667rem + 0.3704vw, 1.5rem);
+  --fs-28-32: clamp(1.75rem, 1.6667rem + 0.3704vw, 2rem);
+
 }
 
 .dark {
