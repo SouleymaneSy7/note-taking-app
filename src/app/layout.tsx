@@ -1,7 +1,14 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { Satisfy } from "next/font/google";
 
 import "./globals.css";
+
+const satisfy = Satisfy({
+  weight: "400",
+  subsets: ["latin"],
+  display: "swap",
+});
 
 const gillSans = localFont({
   src: [
@@ -14,7 +21,7 @@ const gillSans = localFont({
       weight: "700",
       style: "normal",
       path: "../../public/assets/fonts/sans-serif/gill-sans-bold.woff2",
-    }
+    },
   ],
   display: "swap",
   fallback: ["sans-serif"],
@@ -32,7 +39,7 @@ const georgia = localFont({
       weight: "700",
       style: "normal",
       path: "../../public/assets/fonts/serif/georgia-bold.woff2",
-    }
+    },
   ],
   display: "swap",
   fallback: ["sans-serif"],
@@ -50,14 +57,12 @@ const iaWriterMono = localFont({
       weight: "700",
       style: "normal",
       path: "../../public/assets/fonts/mono/ia-writer-mono-bold.woff2",
-    }
+    },
   ],
   display: "swap",
   fallback: ["sans-serif"],
   variable: "--font-ia-writer-mono",
 });
-
-
 
 export const metadata: Metadata = {
   title: "Inkly - Note taking web app",
@@ -72,7 +77,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${gillSans.variable} antialiased`}
+        className={`${satisfy.className} ${iaWriterMono.className} ${gillSans.className} ${georgia.className} antialiased`}
       >
         {children}
       </body>
