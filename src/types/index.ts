@@ -23,3 +23,8 @@ export interface TitleProps extends React.HTMLAttributes<HTMLElement> {
 export type IconPropsType = {
   fill?: string;
 } & React.ComponentPropsWithoutRef<"svg">;
+
+export interface PasswordInputPropsType
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+}
