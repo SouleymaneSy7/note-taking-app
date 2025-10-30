@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { Satisfy } from "next/font/google";
 
 import "./globals.css";
+import { Toaster } from "@/components/ui/sonner";
 
 const satisfy = Satisfy({
   weight: "400",
@@ -81,6 +82,7 @@ export default function RootLayout({
         className={`${satisfy.variable} ${iaWriterMono.variable} ${gillSans.variable} ${georgia.variable} antialiased`}
       >
         {children}
+        <Toaster />
       </body>
     </html>
   );
