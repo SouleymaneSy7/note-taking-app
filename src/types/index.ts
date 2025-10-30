@@ -1,5 +1,10 @@
 import * as React from "react";
 
+import { z } from "zod";
+import { FieldError } from "react-hook-form";
+
+import { loginSchema, signupSchema } from "@/validators/auth.validators";
+
 export type ContainerTypes<T extends React.ElementType> = {
   as?: T;
   children: React.ReactNode;
@@ -27,4 +32,9 @@ export type IconPropsType = {
 export interface PasswordInputPropsType
   extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  error?: FieldError;
+  description?: string;
 }
+
+export type LoginInputValidatorsType = z.infer<typeof loginSchema>;
+export type SignupInputValidatorsType = z.infer<typeof signupSchema>;
