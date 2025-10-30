@@ -31,6 +31,7 @@ export const GithubIcon: React.FC<IconPropsType> = ({
       width="24"
       height="24"
       fill="none"
+      viewBox="0 0 24 24"
       {...delegatedProps}
     >
       <path
@@ -51,6 +52,7 @@ export const GoogleIcon: React.FC<IconPropsType> = ({
       width="24"
       height="24"
       fill="none"
+      viewBox="0 0 24 24"
       {...delegatedProps}
     >
       <path
