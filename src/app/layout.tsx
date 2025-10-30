@@ -4,6 +4,7 @@ import { Satisfy } from "next/font/google";
 
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const satisfy = Satisfy({
   weight: "400",
@@ -77,11 +78,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${satisfy.variable} ${iaWriterMono.variable} ${gillSans.variable} ${georgia.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider
+          enableSystem
+          attribute="class"
+          defaultTheme="system"
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>
