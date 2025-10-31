@@ -31,6 +31,7 @@ import { GithubIcon, GoogleIcon } from "@/components/icons/icons.component";
 import { signupSchema } from "@/validators/auth.validators";
 import { SignupInputValidatorsType } from "@/types";
 import { toast } from "sonner";
+import { signUpAction } from "@/app/actions/auth.actions";
 
 export function SignupForm({
   className,
@@ -63,16 +64,10 @@ export function SignupForm({
       setIsLoading(true);
       setError("");
 
-      const promise = new Promise((resolve) =>
-        setTimeout(
-          () => resolve(console.log("Signup formData :", data)),
-          10000,
-        ),
-      );
-
-      return promise;
+      await signUpAction(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
+      console.log(err);
     } finally {
       setIsLoading(false);
     }
