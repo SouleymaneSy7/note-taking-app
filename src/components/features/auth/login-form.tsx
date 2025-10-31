@@ -30,6 +30,7 @@ import { PasswordInput } from "@/components/shared/password-input";
 import { LoginInputValidatorsType } from "@/types";
 import { loginSchema } from "@/validators/auth.validators";
 import { Spinner } from "@/components/ui/spinner";
+import { signInAction } from "@/app/actions/auth.actions";
 
 export function LoginForm({
   className,
@@ -59,11 +60,7 @@ export function LoginForm({
       setIsLoading(true);
       setError("");
 
-      const promise = new Promise((resolve) =>
-        setTimeout(() => resolve(console.log("Login formData :", data)), 10000),
-      );
-
-      return promise;
+      await signInAction(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
