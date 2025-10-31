@@ -1,16 +1,12 @@
 import Link from "next/link";
-import { headers } from "next/headers";
-
-import { auth } from "@/lib/auth";
-import { Button } from "@/components/ui/button";
+import { getSessionAction, signOutAction } from "./actions/auth.actions";
 
 import Logo from "@/components/shared/logo";
-import { signOutAction } from "./actions/auth.actions";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default async function Home() {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+  const session = await getSessionAction();
 
   if (!session) {
     return (
@@ -31,17 +27,19 @@ export default async function Home() {
   }
 
   return (
-    <div className="m-8 flex items-center justify-between">
-      <Logo />
-
-      <div className="flex flex-col gap-4">
-        <p>User Name: {session.user.name}</p>
+    <div className="h-screen">
+      <div className="m-8 flex items-center justify-between">
+        <Logo />
 
         <form action={signOutAction}>
           <Button type="submit" size={"lg"}>
             Logout
           </Button>
         </form>
+      </div>
+
+      <div className="flex items-center justify-center">
+        <h1 className="text-6xl">User Name: {session.user.name}</h1>
       </div>
     </div>
   );
