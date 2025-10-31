@@ -4,10 +4,12 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-export const signUpAction = async (formData: FormData) => {
-  const name = formData.get("name") as string;
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+import { LoginInputValidatorsType, SignupInputValidatorsType } from "@/types";
+
+export const signUpAction = async (formData: SignupInputValidatorsType) => {
+  const name = formData.name;
+  const email = formData.email;
+  const password = formData.password;
 
   await auth.api.signUpEmail({
     body: {
@@ -20,9 +22,9 @@ export const signUpAction = async (formData: FormData) => {
   redirect("/");
 };
 
-export const signInAction = async (formData: FormData) => {
-  const email = formData.get("email") as string;
-  const password = formData.get("password") as string;
+export const signInAction = async (formData: LoginInputValidatorsType) => {
+  const email = formData.email;
+  const password = formData.password;
 
   await auth.api.signInEmail({
     body: {
@@ -39,5 +41,13 @@ export const signOutAction = async () => {
     headers: await headers(),
   });
 
-  redirect("/");
+  redirect("/login");
 };
+
+export async function getSessionAction() {
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  return session;
+}
