@@ -31,7 +31,11 @@ import { GithubIcon, GoogleIcon } from "@/components/icons/icons.component";
 import { signupSchema } from "@/validators/auth.validators";
 import { SignupInputValidatorsType } from "@/types";
 import { toast } from "sonner";
-import { signUpAction } from "@/app/actions/auth.actions";
+import {
+  signInWithGithubAction,
+  signInWithGoogleAction,
+  signUpAction,
+} from "@/app/actions/auth.actions";
 
 export function SignupForm({
   className,
@@ -71,6 +75,14 @@ export function SignupForm({
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const githubAuthSignIn = async () => {
+    await signInWithGithubAction();
+  };
+
+  const googleAuthSignIn = async () => {
+    await signInWithGoogleAction();
   };
 
   console.log(watch("name"));
@@ -180,12 +192,22 @@ export function SignupForm({
                 <FieldSeparator>Or continue with</FieldSeparator>
                 <Field className="gap-6">
                   <div className="flex w-full items-center gap-5">
-                    <Button variant="outline" type="button" className="flex-1">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="flex flex-1 items-center"
+                      onClick={googleAuthSignIn}
+                    >
                       <GoogleIcon />
                       Google
                     </Button>
 
-                    <Button variant="outline" type="button" className="flex-1">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="flex flex-1 items-center"
+                      onClick={githubAuthSignIn}
+                    >
                       <GithubIcon />
                       GitHub
                     </Button>
