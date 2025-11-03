@@ -51,19 +51,3 @@ export async function getSessionAction() {
 
   return session;
 }
-
-export const signInWithGoogleAction = async () => {
-  await auth.api.signInSocial({
-    body: {
-      provider: "google",
-    },
-  });
-};
-
-export const signInWithGithubAction = async () => {
-  await auth.api.signInSocial({
-    body: {
-      provider: "github",
-    },
-  });
-};
