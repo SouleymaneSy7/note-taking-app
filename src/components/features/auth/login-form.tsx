@@ -30,7 +30,11 @@ import { PasswordInput } from "@/components/shared/password-input";
 import { LoginInputValidatorsType } from "@/types";
 import { loginSchema } from "@/validators/auth.validators";
 import { Spinner } from "@/components/ui/spinner";
-import { signInAction } from "@/app/actions/auth.actions";
+import {
+  signInAction,
+  signInWithGithubAction,
+  signInWithGoogleAction,
+} from "@/app/actions/auth.actions";
 
 export function LoginForm({
   className,
@@ -45,7 +49,6 @@ export function LoginForm({
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<LoginInputValidatorsType>({
     resolver: zodResolver(loginSchema),
@@ -68,19 +71,24 @@ export function LoginForm({
     }
   };
 
-  console.log(watch("email"));
-  console.log(watch("password"));
+  const githubAuthSignIn = async () => {
+    await signInWithGithubAction();
+  };
+
+  const googleAuthSignIn = async () => {
+    await signInWithGoogleAction();
+  };
 
   return (
     <React.Fragment>
       {error && toast.error(error)}
 
       <div className={cn("flex flex-col gap-6", className)} {...delegatedProps}>
-        <Card className="p-8">
+        <Card>
           <CardHeader className="flex flex-col items-center gap-4 text-center">
             <Logo />
 
-            <CardDescription className="text-md">
+            <CardDescription>
               Enter your email below to login to your account
             </CardDescription>
           </CardHeader>
@@ -91,7 +99,7 @@ export function LoginForm({
                 {/* Email */}
 
                 <Field data-invalid={!!errors.email}>
-                  <FieldLabel htmlFor={emailId} className="text-sm font-bold">
+                  <FieldLabel htmlFor={emailId} className="font-bold">
                     Email
                   </FieldLabel>
 
@@ -138,13 +146,23 @@ export function LoginForm({
                 <FieldSeparator>Or continue with</FieldSeparator>
 
                 <Field className="gap-6">
-                  <div className="flex w-full items-center gap-5">
-                    <Button variant="outline" type="button" className="flex-1">
+                  <div className="flex w-full flex-wrap items-center gap-5">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="flex flex-1 items-center"
+                      onClick={googleAuthSignIn}
+                    >
                       <GoogleIcon />
                       Google
                     </Button>
 
-                    <Button variant="outline" type="button" className="flex-1">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      className="flex flex-1 items-center"
+                      onClick={githubAuthSignIn}
+                    >
                       <GithubIcon />
                       GitHub
                     </Button>
@@ -154,7 +172,7 @@ export function LoginForm({
                     Don&apos;t have an account?{" "}
                     <Link
                       href="/signup"
-                      className="text-primary underline underline-offset-4"
+                      className="text-primary font-bold underline underline-offset-4"
                     >
                       Sign up
                     </Link>
