@@ -30,11 +30,8 @@ import { PasswordInput } from "@/components/shared/password-input";
 import { LoginInputValidatorsType } from "@/types";
 import { loginSchema } from "@/validators/auth.validators";
 import { Spinner } from "@/components/ui/spinner";
-import {
-  signInAction,
-  signInWithGithubAction,
-  signInWithGoogleAction,
-} from "@/app/actions/auth.actions";
+import { signInAction } from "@/app/actions/auth.actions";
+import { signIn } from "@/lib/auth-client";
 
 export function LoginForm({
   className,
@@ -42,6 +39,8 @@ export function LoginForm({
 }: React.ComponentProps<"div">) {
   const [error, setError] = React.useState<string>("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
+  const [isGithubLoading, setIsGithubLoading] = React.useState(false);
 
   const id = React.useId();
   const emailId = `email-${id}`;
@@ -71,12 +70,40 @@ export function LoginForm({
     }
   };
 
-  const githubAuthSignIn = async () => {
-    await signInWithGithubAction();
+  const handleGitHubSignIn = async () => {
+    try {
+      setIsGithubLoading(true);
+      setError("");
+
+      await signIn.social({
+        provider: "github",
+        callbackURL: "/",
+      });
+    } catch (err) {
+      console.error("GitHub sign in error:", err);
+
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsGithubLoading(false);
+    }
   };
 
-  const googleAuthSignIn = async () => {
-    await signInWithGoogleAction();
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsGoogleLoading(true);
+      setError("");
+
+      await signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+    } catch (err) {
+      console.error("Google sign in error:", err);
+
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsGoogleLoading(false);
+    }
   };
 
   return (
@@ -151,20 +178,34 @@ export function LoginForm({
                       type="button"
                       variant="outline"
                       className="flex flex-1 items-center"
-                      onClick={googleAuthSignIn}
+                      onClick={handleGoogleSignIn}
+                      disabled={isGoogleLoading}
                     >
-                      <GoogleIcon />
-                      Google
+                      {isGoogleLoading ? (
+                        <Spinner />
+                      ) : (
+                        <React.Fragment>
+                          <GoogleIcon />
+                          Google
+                        </React.Fragment>
+                      )}
                     </Button>
 
                     <Button
                       type="button"
                       variant="outline"
                       className="flex flex-1 items-center"
-                      onClick={githubAuthSignIn}
+                      onClick={handleGitHubSignIn}
+                      disabled={isGithubLoading}
                     >
-                      <GithubIcon />
-                      GitHub
+                      {isGithubLoading ? (
+                        <Spinner />
+                      ) : (
+                        <React.Fragment>
+                          <GithubIcon />
+                          GitHub
+                        </React.Fragment>
+                      )}
                     </Button>
                   </div>
 

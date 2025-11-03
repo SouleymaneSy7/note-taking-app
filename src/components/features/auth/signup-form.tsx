@@ -31,11 +31,9 @@ import { GithubIcon, GoogleIcon } from "@/components/icons/icons.component";
 import { signupSchema } from "@/validators/auth.validators";
 import { SignupInputValidatorsType } from "@/types";
 import { toast } from "sonner";
-import {
-  signInWithGithubAction,
-  signInWithGoogleAction,
-  signUpAction,
-} from "@/app/actions/auth.actions";
+import { signUpAction } from "@/app/actions/auth.actions";
+import { Spinner } from "@/components/ui/spinner";
+import { signIn } from "@/lib/auth-client";
 
 export function SignupForm({
   className,
@@ -43,13 +41,14 @@ export function SignupForm({
 }: React.ComponentProps<"div">) {
   const [error, setError] = React.useState<string>("");
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isGoogleLoading, setIsGoogleLoading] = React.useState(false);
+  const [isGithubLoading, setIsGithubLoading] = React.useState(false);
 
   const id = React.useId();
   const fullNameId = `full-name-${id}`;
   const emailId = `email-${id}`;
 
   const {
-    watch,
     register,
     handleSubmit,
     formState: { errors },
@@ -70,25 +69,53 @@ export function SignupForm({
 
       await signUpAction(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred");
+      if (err instanceof Error && !err.message.includes("NEXT_REDIRECT")) {
+        const errorMessage = err.message || "An error occurred";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
+
       console.log(err);
     } finally {
       setIsLoading(false);
     }
   };
 
-  const githubAuthSignIn = async () => {
-    await signInWithGithubAction();
+  const handleGitHubSignIn = async () => {
+    try {
+      setIsGithubLoading(true);
+      setError("");
+
+      await signIn.social({
+        provider: "github",
+        callbackURL: "/",
+      });
+    } catch (err) {
+      console.error("GitHub sign in error:", err);
+
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsGithubLoading(false);
+    }
   };
 
-  const googleAuthSignIn = async () => {
-    await signInWithGoogleAction();
-  };
+  const handleGoogleSignIn = async () => {
+    try {
+      setIsGoogleLoading(true);
+      setError("");
 
-  console.log(watch("name"));
-  console.log(watch("email"));
-  console.log(watch("password"));
-  console.log(watch("confirmPassword"));
+      await signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      });
+    } catch (err) {
+      console.error("Google sign in error:", err);
+
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsGoogleLoading(false);
+    }
+  };
 
   return (
     <React.Fragment>
@@ -196,20 +223,34 @@ export function SignupForm({
                       type="button"
                       variant="outline"
                       className="flex flex-1 items-center"
-                      onClick={googleAuthSignIn}
+                      onClick={handleGoogleSignIn}
+                      disabled={isGoogleLoading}
                     >
-                      <GoogleIcon />
-                      Google
+                      {isGoogleLoading ? (
+                        <Spinner />
+                      ) : (
+                        <React.Fragment>
+                          <GoogleIcon />
+                          Google
+                        </React.Fragment>
+                      )}
                     </Button>
 
                     <Button
                       type="button"
                       variant="outline"
                       className="flex flex-1 items-center"
-                      onClick={githubAuthSignIn}
+                      onClick={handleGitHubSignIn}
+                      disabled={isGithubLoading}
                     >
-                      <GithubIcon />
-                      GitHub
+                      {isGithubLoading ? (
+                        <Spinner />
+                      ) : (
+                        <React.Fragment>
+                          <GithubIcon />
+                          GitHub
+                        </React.Fragment>
+                      )}
                     </Button>
                   </div>
 
