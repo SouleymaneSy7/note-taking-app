@@ -8,7 +8,7 @@ const Logo = () => {
     <Container as={"div"} className="flex items-center gap-2">
       <LogoIcon />
 
-      <Title level="h2" className="text-heading-md font-satisfy">
+      <Title level="h2" className="text-custom-heading-md font-satisfy">
         Inkly
       </Title>
     </Container>
