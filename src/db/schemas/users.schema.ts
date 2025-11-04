@@ -1,3 +1,5 @@
+import z from "zod";
+import { createInsertSchema } from "drizzle-zod";
 import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
@@ -59,3 +61,15 @@ export const verification = pgTable("verification", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
 });
+
+export const userSchema = createInsertSchema(user);
+export type UserSchemaType = z.infer<typeof userSchema>;
+
+export const sessionSchema = createInsertSchema(session);
+export type SessionSchemaType = z.infer<typeof sessionSchema>;
+
+export const accountSchema = createInsertSchema(account);
+export type AccountSchemaType = z.infer<typeof accountSchema>;
+
+export const verificationSchema = createInsertSchema(verification);
+export type VerificationSchemaType = z.infer<typeof verificationSchema>;
