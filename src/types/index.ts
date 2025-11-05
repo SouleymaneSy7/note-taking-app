@@ -4,6 +4,7 @@ import { z } from "zod";
 import { FieldError } from "react-hook-form";
 
 import { loginSchema, signupSchema } from "@/validators/auth.validators";
+import { LucideIcon } from "lucide-react";
 
 export type ContainerTypes<T extends React.ElementType> = {
   as?: T;
@@ -38,3 +39,29 @@ export interface PasswordInputPropsType
 
 export type LoginInputValidatorsType = z.infer<typeof loginSchema>;
 export type SignupInputValidatorsType = z.infer<typeof signupSchema>;
+
+export type SidebarNavUserPropsType = {
+  user: {
+    name: string;
+    email: string;
+    avatar: string;
+  };
+};
+
+export type SidebarNavTagsPropsType = {
+  tagTitle: string;
+  tagsContent: {
+    id: string;
+    title: string;
+    icon?: LucideIcon;
+  }[];
+};
+
+export type SidebarNavMainPropsType = {
+  items: {
+    id: string;
+    title: string;
+    url: string;
+    icon?: LucideIcon;
+  }[];
+};
