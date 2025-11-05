@@ -91,9 +91,14 @@ export function SignupForm({
         callbackURL: "/",
       });
     } catch (err) {
-      console.error("GitHub sign in error:", err);
+      if (err instanceof Error && !err.message.includes("NEXT_REDIRECT")) {
+        const errorMessage =
+          err.message || "An error occurred in Github Sign in.";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
 
-      setError(err instanceof Error ? err.message : "An error occurred");
+      console.error("GitHub sign in error:", err);
     } finally {
       setIsGithubLoading(false);
     }
@@ -109,9 +114,14 @@ export function SignupForm({
         callbackURL: "/",
       });
     } catch (err) {
-      console.error("Google sign in error:", err);
+      if (err instanceof Error && !err.message.includes("NEXT_REDIRECT")) {
+        const errorMessage =
+          err.message || "An error occurred in Google Sign in.";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
 
-      setError(err instanceof Error ? err.message : "An error occurred");
+      console.error("Google sign in error:", err);
     } finally {
       setIsGoogleLoading(false);
     }
@@ -126,11 +136,11 @@ export function SignupForm({
           <CardHeader className="flex flex-col items-center gap-2 text-center">
             <Logo />
 
-            <CardTitle className="text-foreground mt-4 text-base text-balance">
+            <CardTitle className="text-foreground text-custom-heading-sm mt-4 text-balance">
               Create your account
             </CardTitle>
 
-            <CardDescription className="text-md">
+            <CardDescription>
               Fill in the form below to create your account
             </CardDescription>
           </CardHeader>
@@ -159,9 +169,7 @@ export function SignupForm({
                   />
 
                   {errors.name && (
-                    <FieldError className="font-regular text-xs">
-                      {errors.name?.message}
-                    </FieldError>
+                    <FieldError>{errors.name?.message}</FieldError>
                   )}
                 </Field>
 
@@ -186,9 +194,7 @@ export function SignupForm({
                   />
 
                   {errors.email && (
-                    <FieldError className="font-regular text-xs">
-                      {errors.email?.message}
-                    </FieldError>
+                    <FieldError>{errors.email?.message}</FieldError>
                   )}
                 </Field>
 
@@ -199,19 +205,29 @@ export function SignupForm({
                   error={errors.password}
                   {...register("password")}
                   description="At least 8 characters with uppercase, lowercase, number, and special character."
+                  className={
+                    errors.password
+                      ? "border-destructive focus-visible:ring-destructive bg-destructive/15"
+                      : undefined
+                  }
                 />
 
                 {/* Confirm Password */}
                 <PasswordInput
-                  label="Confirm Password"
                   disabled={isLoading}
-                  description="Please confirm your password."
+                  label="Confirm Password"
                   error={errors.confirmPassword}
                   {...register("confirmPassword")}
+                  description="Please confirm your password."
+                  className={
+                    errors.confirmPassword
+                      ? "border-destructive focus-visible:ring-destructive bg-destructive/15"
+                      : undefined
+                  }
                 />
 
                 <Field>
-                  <Button type="submit" className="text-md font-bold">
+                  <Button type="submit" className="font-bold">
                     Create Account
                   </Button>
                 </Field>
@@ -258,7 +274,7 @@ export function SignupForm({
                     Already have an account?{" "}
                     <Link
                       href="login"
-                      className="text-primary underline underline-offset-4"
+                      className="text-primary font-bold underline underline-offset-4"
                     >
                       Login
                     </Link>
