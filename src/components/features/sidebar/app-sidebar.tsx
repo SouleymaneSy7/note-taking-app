@@ -75,7 +75,7 @@ const AppSidebar = ({
   ...delegatedProps
 }: React.ComponentProps<typeof Sidebar>) => {
   return (
-    <Sidebar {...delegatedProps}>
+    <Sidebar {...delegatedProps} className="px-3">
       <SidebarNavHeader />
 
       <Separator />
