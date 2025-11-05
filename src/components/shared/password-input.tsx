@@ -13,6 +13,7 @@ import {
   FieldDescription,
 } from "@/components/ui/field";
 import { PasswordInputPropsType } from "@/types";
+import VisualyHidden from "../common/visualy-hidden";
 
 const PasswordInput = React.forwardRef<
   HTMLInputElement,
@@ -58,9 +59,9 @@ const PasswordInput = React.forwardRef<
             <EyeIcon className="text-muted-foreground h-4 w-4" />
           )}
 
-          {/* <VisualyHidden> */}
-          {/*   {showPassword ? "Show the password" : "Hide the password"} */}
-          {/* </VisualyHidden> */}
+          <VisualyHidden>
+            {showPassword ? "Show the password" : "Hide the password"}
+          </VisualyHidden>
         </Button>
       </div>
 
