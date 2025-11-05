@@ -21,7 +21,7 @@ import {
 import { SidebarNavUserPropsType } from "@/types";
 import { getNameInitials } from "@/utils/getNameInitials";
 
-export const NavUser: React.FC<SidebarNavUserPropsType> = ({ user }) => {
+export const SidebarNavUser: React.FC<SidebarNavUserPropsType> = ({ user }) => {
   const { isMobile } = useSidebar();
 
   return (
