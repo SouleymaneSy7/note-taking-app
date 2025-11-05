@@ -65,6 +65,13 @@ export function LoginForm({
       await signInAction(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred");
+      if (err instanceof Error && !err.message.includes("NEXT_REDIRECT")) {
+        const errorMessage = err.message || "An error occurred";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
+
+      console.log(err);
     } finally {
       setIsLoading(false);
     }
@@ -80,9 +87,14 @@ export function LoginForm({
         callbackURL: "/",
       });
     } catch (err) {
-      console.error("GitHub sign in error:", err);
+      if (err instanceof Error && !err.message.includes("NEXT_REDIRECT")) {
+        const errorMessage =
+          err.message || "An error occurred in Github Sign in.";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
 
-      setError(err instanceof Error ? err.message : "An error occurred");
+      console.error("GitHub sign in error:", err);
     } finally {
       setIsGithubLoading(false);
     }
@@ -98,9 +110,14 @@ export function LoginForm({
         callbackURL: "/",
       });
     } catch (err) {
-      console.error("Google sign in error:", err);
+      if (err instanceof Error && !err.message.includes("NEXT_REDIRECT")) {
+        const errorMessage =
+          err.message || "An error occurred in Google Sign in.";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      }
 
-      setError(err instanceof Error ? err.message : "An error occurred");
+      console.error("Google sign in error:", err);
     } finally {
       setIsGoogleLoading(false);
     }
@@ -134,7 +151,7 @@ export function LoginForm({
                     required
                     id={emailId}
                     type="email"
-                    placeholder="example@email.com"
+                    placeholder="johndoe@email.com"
                     disabled={isLoading}
                     {...register("email")}
                     className={
@@ -155,6 +172,11 @@ export function LoginForm({
                   disabled={isLoading}
                   error={errors.password}
                   {...register("password")}
+                  className={
+                    errors.password
+                      ? "border-destructive focus-visible:ring-destructive bg-destructive/15"
+                      : undefined
+                  }
                 />
 
                 {/* Button */}
@@ -162,7 +184,7 @@ export function LoginForm({
                   <Button
                     disabled={isLoading}
                     type="submit"
-                    className="text-md font-bold"
+                    className="font-bold"
                   >
                     {isLoading && <Spinner />}
                     Login
